@@ -11,7 +11,7 @@ Template Name: About
 
         <div class="row">
             <div class="col-lg-6">
-                Contact form
+                Contact formasd
             </div>
             <div class="col-lg-6">
                 <?php get_template_part('includes/section', 'content');?>
