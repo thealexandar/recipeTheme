@@ -5,9 +5,14 @@
 <div class="card mb-3">
   <div class="row no-gutters">
     <div class="col-md-4">
+
         <?php if(has_post_thumbnail()):?>
             <img src="<?php the_post_thumbnail_url('blog-small');?>" alt="<?php the_title();?>" class="img-fluid mb-3 img-thumbnail">
-        <?php endif;?>
+        <?php else: ?>
+          <img src="<?php bloginfo('template_directory'); ?>/images/default.jpg" alt="<?php the_title(); ?>" />
+        <?php endif; ?>
+
+
     </div>
     <div class="col-md-8">
       <div class="card-body">
