@@ -15,6 +15,9 @@ function load_js(){
     wp_enqueue_script('jquery');
     wp_register_script('bootstrap', get_template_directory_uri() . '/js/bootstrap.min.js', 'jquery', false, true);
     wp_enqueue_script('bootstrap');
+    wp_register_script('custom', get_template_directory_uri() . '/js/custom.js', 'jquery', false, true);
+    wp_enqueue_script('custom');
+
 }
 add_action('wp_enqueue_scripts', 'load_js');
 
@@ -51,9 +54,6 @@ function recipe_post_type(){
 add_action('init', 'recipe_post_type');
 
 
-
-
-
 // Custom image sizes
 add_image_size('blog-large', 800, 400, true);
 add_image_size('blog-small', 300, 200, true);
@@ -63,16 +63,10 @@ add_image_size('blog-small', 300, 200, true);
 // Add new recipe
 if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == "front_post") {
 
-
-    //store our post vars into variables for later use
-    //now would be a good time to run some basic error checking/validation
-    //to ensure that data for these values have been set
     $title     = $_POST['title'];
     $content   = $_POST['content'];
     $post_type = 'recipes';
 
-
-    //the array of arguements to be inserted with wp_insert_post
     $new_post = array(
     'post_title'    => $title,
     'post_content'  => $content,
@@ -80,9 +74,6 @@ if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POS
     'post_type'     => $post_type
     );
 
-    //insert the the post into database by passing $new_post to wp_insert_post
-    //store our post ID in a variable $pid
-    //we now use $pid (post id) to help add out post meta data
      $pid=wp_insert_post($new_post);
 
     if(!function_exists('wp_generate_attachment_metadata')){
@@ -102,34 +93,33 @@ if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POS
             update_post_meta($pid, '_thumbnail_id', $attach_id);
         }
 
-
-
     //we now use $pid (post id) to help add out post meta data
     add_post_meta($pid, 'cust_key', $custom_field);
 
 
-    }
-
-
-add_action("pre_get_posts", "custom_front_page");
-function custom_front_page($wp_query){
-    //Ensure this filter isn't applied to the admin area
-    if(is_admin()) {
-        return;
-    }
-
-    if($wp_query->get('page_id') == get_option('page_on_front')):
-
-        $wp_query->set('post_type', 'recipes');
-        $wp_query->set('page_id', ''); //Empty
-
-        //Set properties that describe the page to reflect that
-        //we aren't really displaying a static page
-        $wp_query->is_page = 0;
-        $wp_query->is_singular = 0;
-        $wp_query->is_post_type_archive = 1;
-        $wp_query->is_archive = 1;
-
-    endif;
-
 }
+
+
+// Add recipes to homepage
+// add_action("pre_get_posts", "custom_front_page");
+// function custom_front_page($wp_query){
+//     //Ensure this filter isn't applied to the admin area
+//     if(is_admin()) {
+//         return;
+//     }
+
+//     if($wp_query->get('page_id') == get_option('page_on_front')):
+
+//         $wp_query->set('post_type', 'recipes');
+//         $wp_query->set('page_id', ''); //Empty
+
+//         //Set properties that describe the page to reflect that
+//         //we aren't really displaying a static page
+//         $wp_query->is_page = 0;
+//         $wp_query->is_singular = 0;
+//         $wp_query->is_post_type_archive = 1;
+//         $wp_query->is_archive = 1;
+
+//     endif;
+
+// }

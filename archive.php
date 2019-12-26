@@ -16,6 +16,7 @@
             'current' => max(1, get_query_var('paged')),
             'total' => $wp_query->max_num_pages
         ));
+
         ?>
 
     </div>
